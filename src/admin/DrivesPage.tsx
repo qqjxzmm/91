@@ -632,7 +632,7 @@ export function DrivesPage() {
                   </button>
                   <button
                     type="button"
-                    className="admin-btn is-stop"
+                    className="admin-btn is-primary"
                     onClick={() => handleStopDriveTasks(d)}
                     disabled={!!stoppingDriveId}
                     title="停止此网盘当前的扫描、封面、预览视频和视频指纹生成任务。"
@@ -642,7 +642,7 @@ export function DrivesPage() {
                   </button>
                 </div>
                 {d.kind !== "spider91" && (
-                  <button type="button" className="admin-btn" onClick={() => openEdit(d)}>
+                  <button type="button" className="admin-btn is-primary" onClick={() => openEdit(d)}>
                     编辑配置凭证
                   </button>
                 )}

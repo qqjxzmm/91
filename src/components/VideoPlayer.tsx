@@ -92,8 +92,11 @@ const LONG_PRESS_MS = 400;
 const FAST_RATE = 2;
 /** 默认倍速。 */
 const NORMAL_RATE = 1;
+/** ArtPlayer 内部播放失败自动重连次数。 */
+const ARTPLAYER_RECONNECT_TIME_MAX = 3;
 
 Artplayer.FAST_FORWARD_VALUE = FAST_RATE;
+Artplayer.RECONNECT_TIME_MAX = ARTPLAYER_RECONNECT_TIME_MAX;
 
 const DEFAULT_SETTINGS: PlayerSettings = {
   volume: 0.7,

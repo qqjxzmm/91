@@ -304,6 +304,21 @@ test("drive management exposes stop task controls", () => {
   assert.match(drivesPageSource, /停止所有网盘任务/);
 });
 
+test("drive detail primary actions use the rescan button color", () => {
+  assert.match(
+    drivesPageSource,
+    /className="admin-btn is-primary"\s+onClick=\{\(\) => handleRescan\(d\)\}/
+  );
+  assert.match(
+    drivesPageSource,
+    /className="admin-btn is-primary"\s+onClick=\{\(\) => handleStopDriveTasks\(d\)\}/
+  );
+  assert.match(
+    drivesPageSource,
+    /className="admin-btn is-primary"\s+onClick=\{\(\) => openEdit\(d\)\}/
+  );
+});
+
 test("drive rescan reports busy storage tasks instead of queueing duplicates", () => {
   assert.match(apiSource, /accepted:\s*boolean;\s*message\?:\s*string/);
   assert.match(apiSource, /scanGenerationStatus\?: DriveGenerationStatus/);
