@@ -14,6 +14,9 @@ const indexHtml = readFileSync(
   new URL("../index.html", import.meta.url),
   "utf8"
 );
+const manifest = JSON.parse(
+  readFileSync(new URL("../public/manifest.webmanifest", import.meta.url), "utf8")
+) as { icons: Array<{ src: string; sizes: string; purpose: string }> };
 
 // iOS Safari/WebKit does not composite an inline <video> nested inside a
 // `position: fixed` ancestor — the video decodes and plays but never paints
@@ -46,6 +49,33 @@ test("iPhone browser uses document scrolling and only explicit fullscreen", () =
 
 test("app has standalone display metadata for iPhone home-screen launch", () => {
   assert.match(indexHtml, /<link rel="manifest" href="\/manifest\.webmanifest" \/>/);
+  assert.match(
+    indexHtml,
+    /<link rel="apple-touch-icon" sizes="180x180" href="\/apple-touch-icon\.png" \/>/
+  );
   assert.match(indexHtml, /<meta name="apple-mobile-web-app-capable" content="yes" \/>/);
   assert.match(indexHtml, /<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" \/>/);
+});
+
+test("home-screen icons use safe-area assets instead of the in-app logo", () => {
+  assert.ok(
+    manifest.icons.some(
+      (icon) =>
+        icon.src === "/app-icon-512.png" &&
+        icon.sizes === "512x512" &&
+        icon.purpose === "any"
+    )
+  );
+  assert.ok(
+    manifest.icons.some(
+      (icon) =>
+        icon.src === "/app-icon-maskable-512.png" &&
+        icon.sizes === "512x512" &&
+        icon.purpose === "maskable"
+    )
+  );
+  assert.equal(
+    manifest.icons.some((icon) => icon.src === "/icon.png" && icon.purpose.includes("maskable")),
+    false
+  );
 });
