@@ -44,6 +44,7 @@ type PlayerSettings = {
   muted: boolean;
   playbackRate: number;
   brightness: number;
+  loop: boolean;
 };
 
 type VideoElementWithHls = HTMLVideoElement & {
@@ -105,6 +106,7 @@ const DEFAULT_SETTINGS: PlayerSettings = {
   muted: false,
   playbackRate: 1,
   brightness: 1,
+  loop: true,
 };
 const DEFAULT_SETTING_LAYOUT = {
   width: Artplayer.SETTING_WIDTH,
@@ -339,6 +341,7 @@ function mountArtPlayer({
   const fastActiveRef = { current: false };
   const loadHlsSource = createHlsSourceLoader(onError);
   const enableOrientationControl = shouldEnableMobileOrientationControl();
+  const enableWebFullscreen = shouldEnableWebFullscreen(enableOrientationControl);
   configureArtPlayerSettingLayout(
     shouldUseCompactPlayerSettings(mount, enableOrientationControl)
   );
@@ -360,7 +363,7 @@ function mountArtPlayer({
     pip: true,
     mutex: true,
     fullscreen: true,
-    fullscreenWeb: !enableOrientationControl,
+    fullscreenWeb: enableWebFullscreen,
     miniProgressBar: true,
     backdrop: false,
     playsInline: true,
@@ -396,7 +399,7 @@ function mountArtPlayer({
   video.setAttribute("controlsList", "nodownload");
   video.setAttribute("webkit-playsinline", "true");
   video.disablePictureInPicture = false;
-  video.loop = false;
+  video.loop = DEFAULT_SETTINGS.loop;
   video.playbackRate = DEFAULT_SETTINGS.playbackRate;
   applyPlayerBrightness(art, DEFAULT_SETTINGS.brightness);
   art.url = src;
@@ -495,12 +498,28 @@ function mountArtPlayer({
 }
 
 function shouldEnableMobileOrientationControl() {
+  return isMobilePlaybackDevice() && !isApplePhoneDevice();
+}
+
+function shouldEnableWebFullscreen(enableOrientationControl: boolean) {
+  return !enableOrientationControl && !isAppleDevice();
+}
+
+function isMobilePlaybackDevice() {
   const coarsePointer = window.matchMedia?.(
     "(hover: none) and (pointer: coarse)"
   ).matches;
   if (coarsePointer) return true;
 
   return /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
+}
+
+function isApplePhoneDevice() {
+  return /iPhone|iPod/i.test(navigator.userAgent);
+}
+
+function isAppleDevice() {
+  return /iPhone|iPad|iPod|Macintosh/i.test(navigator.userAgent);
 }
 
 function shouldUseCompactPlayerSettings(
@@ -521,15 +540,15 @@ function configureArtPlayerSettingLayout(compact: boolean) {
 }
 
 function shouldEnableMobileGestures() {
-  return shouldEnableMobileOrientationControl();
+  return isMobilePlaybackDevice();
 }
 
 function createLoopSetting() {
   return {
     name: "mind-loop",
     html: "洗脑循环",
-    tooltip: "关",
-    switch: false,
+    tooltip: DEFAULT_SETTINGS.loop ? "开" : "关",
+    switch: DEFAULT_SETTINGS.loop,
     onSwitch(this: Artplayer, item: SettingOption) {
       const next = !item.switch;
       this.video.loop = next;
