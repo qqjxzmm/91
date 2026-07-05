@@ -538,9 +538,6 @@ func (c *Crawler) processItem(ctx context.Context, item Item) (bool, error) {
 		title = sourceID
 	}
 	author := strings.TrimSpace(item.Author)
-	if author == "" {
-		author = c.cfg.Driver.ID()
-	}
 	// 标签策略：
 	//   1. 脚本返回的 tags 只挂已存在的标签，不自动创建新标签 → source=crawler；
 	//   2. 规则引擎按标题/文件名/作者匹配已有标签池 → source=auto；

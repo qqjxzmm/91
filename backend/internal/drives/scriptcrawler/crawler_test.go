@@ -705,7 +705,6 @@ func TestCrawlerProcessItemKeepsLargerNearDuplicate(t *testing.T) {
 	imported, err := c.processItem(ctx, Item{
 		SourceID:        "larger-source",
 		Title:           "91 Test Larger Candidate 1215516 - source suffix",
-		Author:          "helper",
 		DurationSeconds: 257,
 		Media:           MediaRef{LocalFile: mediaPath},
 		Thumbnail:       MediaRef{LocalFile: thumbPath},
@@ -728,6 +727,9 @@ func TestCrawlerProcessItemKeepsLargerNearDuplicate(t *testing.T) {
 	}
 	if larger.Size <= 5 {
 		t.Fatalf("larger size = %d, want > 5", larger.Size)
+	}
+	if larger.Author != "" {
+		t.Fatalf("larger author = %q, want empty when crawler omits author", larger.Author)
 	}
 }
 
