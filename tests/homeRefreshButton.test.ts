@@ -40,9 +40,15 @@ function ruleBody(css: string, selector: string): string {
 
 test("home page refresh button shares back-to-top slot until back-to-top is visible", () => {
   assert.match(homePageSource, /import \{ Film, RefreshCw \} from "lucide-react"/);
+  assert.match(homePageSource, /const LATEST_POOL_SIZE = 96;/);
+  assert.match(homePageSource, /const HOME_LATEST_CURSOR_KEY = "home\.latest\.cursor";/);
+  assert.match(homePageSource, /function nextLatestBatch/);
+  assert.match(homePageSource, /loadLatestCursor\(items\.length\)/);
+  assert.match(homePageSource, /saveLatestCursor\(\(start \+ count\) % items\.length\)/);
   assert.match(homePageSource, /const refreshHome = useCallback\(async \(\) =>/);
   assert.match(homePageSource, /fetchHomeVideos\(excludeIds\)/);
-  assert.match(homePageSource, /fetchListing\(1,\s*DESKTOP_COUNT,\s*\{ sort: "latest", includeTotal: false \}\)/);
+  assert.match(homePageSource, /fetchListing\(1,\s*LATEST_POOL_SIZE,\s*\{ sort: "latest", includeTotal: false \}\)/);
+  assert.match(homePageSource, /setLatestVideos\(nextLatestBatch\(latestResult\.items,\s*DESKTOP_COUNT\)\)/);
   assert.match(homePageSource, /className=\{`home-refresh \$\{refreshing \? "is-refreshing" : ""\}`\}/);
   assert.match(homePageSource, /aria-label="刷新首页"/);
   assert.match(homePageSource, /<RefreshCw size=\{18\} \/>/);
