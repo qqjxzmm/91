@@ -33,6 +33,18 @@
   padding-top: 0;
 }
 
+.home-discovery-section {
+  padding-bottom: var(--space-2);
+}
+
+.listing-discovery-section {
+  padding-bottom: var(--space-2);
+}
+
+.home-primary-section .section-header {
+  margin-top: var(--space-2);
+}
+
 .home-empty {
   min-height: 240px;
   display: flex;

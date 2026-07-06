@@ -10,8 +10,16 @@ const tagCloudSource = readFileSync(
   new URL("../src/components/TagCloud.tsx", import.meta.url),
   "utf8"
 );
+const searchPanelSource = readFileSync(
+  new URL("../src/components/SearchPanel.tsx", import.meta.url),
+  "utf8"
+);
 const layoutCss = readFileSync(
   new URL("../src/styles/layout.css", import.meta.url),
+  "utf8"
+);
+const searchCss = readFileSync(
+  new URL("../src/styles/search.css", import.meta.url),
   "utf8"
 );
 const appShellSource = readFileSync(
@@ -60,13 +68,41 @@ test("home page hides empty tag cloud and uses one empty library state", () => {
   assert.match(tagCloudSource, /const visibleTags = useMemo/);
   assert.match(tagCloudSource, /typeof tag\.count !== "number" \|\| tag\.count > 0/);
   assert.match(tagCloudSource, /if \(visibleTags\.length === 0\) return null/);
-  assert.match(tagCloudSource, /const row1 = visibleTags\.filter/);
+  assert.match(tagCloudSource, /visibleTags\.map\(renderTag\)/);
+  assert.doesNotMatch(tagCloudSource, /const row[12] = visibleTags\.filter/);
+  assert.doesNotMatch(tagCloudSource, /\(\{tag\.count\}\)/);
+  assert.doesNotMatch(tagCloudSource, /`\$\{tag\.count\} 个视频`/);
+
+  const tagCloudRow = ruleBody(searchCss, ".tag-cloud__row");
+  const tagChip = ruleBody(searchCss, ".tag-chip");
+  assert.match(tagCloudRow, /flex-wrap\s*:\s*nowrap/);
+  assert.match(tagChip, /flex\s*:\s*0 0 auto/);
+
+  const searchForm = ruleBody(searchCss, ".search-panel__form");
+  const searchInput = ruleBody(searchCss, ".search-panel__input");
+  const searchSubmit = ruleBody(searchCss, ".search-panel__submit");
+  assert.match(searchPanelSource, /placeholder="搜索视频标题或作者"/);
+  assert.doesNotMatch(searchPanelSource, /搜索视频标题或作者\.\.\./);
+  assert.match(searchForm, /padding\s*:\s*4px/);
+  assert.match(searchInput, /height\s*:\s*36px/);
+  assert.match(searchSubmit, /height\s*:\s*36px/);
 
   assert.match(homePageSource, /const homeLoading = rankingLoading \|\| latestLoading/);
   assert.match(homePageSource, /const hasAnyVideos = ranking\.length > 0 \|\| latest\.length > 0/);
   assert.match(homePageSource, /const showEmptyHome = !homeLoading && !hasAnyVideos/);
+  assert.match(homePageSource, /<SectionHeader title="随机推荐" \/>/);
+  assert.match(homePageSource, /<SectionHeader title="最新视频" \/>/);
+  assert.doesNotMatch(homePageSource, /随机展示/);
+  assert.doesNotMatch(homePageSource, /共 \$\{latest\.length\} 个/);
+  assert.match(homePageSource, /className="container page-section home-discovery-section"/);
+  assert.match(homePageSource, /className="container page-section home-primary-section"/);
   assert.match(homePageSource, /className="home-empty"/);
   assert.match(homePageSource, /当前还没有可播放的视频/);
+
+  const discoverySection = ruleBody(layoutCss, ".home-discovery-section");
+  const primaryHeader = ruleBody(layoutCss, ".home-primary-section .section-header");
+  assert.match(discoverySection, /padding-bottom\s*:\s*var\(--space-2\)/);
+  assert.match(primaryHeader, /margin-top\s*:\s*var\(--space-2\)/);
 
   const empty = ruleBody(layoutCss, ".home-empty");
   assert.match(empty, /min-height\s*:\s*240px/);

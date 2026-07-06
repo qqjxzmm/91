@@ -132,14 +132,14 @@ export default function HomePage() {
 
   return (
     <AppShell mobileAutoHideNav>
-      <div className="container page-section">
+      <div className="container page-section home-discovery-section">
         <PromoStrip />
         <SearchPanel />
         <TagCloud />
       </div>
 
       {showEmptyHome ? (
-        <div className="container page-section">
+        <div className="container page-section home-primary-section">
           <div className="home-empty" role="status">
             <Film size={30} aria-hidden="true" />
             <span>当前还没有可播放的视频</span>
@@ -147,8 +147,8 @@ export default function HomePage() {
         </div>
       ) : (
         <>
-          <div className="container page-section">
-            <SectionHeader title="随机推荐" extra={`随机展示 ${ranking.length} 个作品`} />
+          <div className="container page-section home-primary-section">
+            <SectionHeader title="随机推荐" />
             <VideoGrid
               videos={ranking}
               loading={rankingLoading}
@@ -158,7 +158,7 @@ export default function HomePage() {
           </div>
 
           <div className="container page-section">
-            <SectionHeader title="最新视频" extra={latest.length > 0 ? `共 ${latest.length} 个` : undefined} />
+            <SectionHeader title="最新视频" />
             <VideoGrid videos={latest} loading={latestLoading} skeletonCount={displayCount} />
           </div>
         </>

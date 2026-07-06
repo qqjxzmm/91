@@ -4,7 +4,6 @@ import { AppShell } from "@/components/AppShell";
 import { PromoStrip } from "@/components/PromoStrip";
 import { SearchPanel } from "@/components/SearchPanel";
 import { TagCloud } from "@/components/TagCloud";
-import { SectionHeader } from "@/components/SectionHeader";
 import { SortToolbar, type ViewMode } from "@/components/SortToolbar";
 import { VideoGrid } from "@/components/VideoGrid";
 import { Pagination } from "@/components/Pagination";
@@ -127,22 +126,15 @@ export default function ListingPage() {
     });
   }, [isFetching, items.length, listKey]);
 
-  const title = keyword
-    ? `搜索结果：${keyword}`
-    : tag
-    ? `标签：${tag}`
-    : "全部视频";
-
   return (
     <AppShell>
-      <div className="container page-section">
+      <div className="container page-section listing-discovery-section">
         <PromoStrip />
         <SearchPanel />
         <TagCloud />
       </div>
 
-      <div className="container page-section">
-        <SectionHeader title={title} extra={`共 ${total} 个视频`} />
+      <div className="container page-section listing-primary-section">
         <SortToolbar
           sort={sort}
           view={view}
