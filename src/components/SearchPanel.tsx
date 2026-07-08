@@ -1,18 +1,38 @@
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { Search } from "lucide-react";
+
+const SEARCH_DEBOUNCE_MS = 500;
 
 export function SearchPanel() {
   const navigate = useNavigate();
   const [params] = useSearchParams();
-  const [keyword, setKeyword] = useState(params.get("q") ?? "");
+  const urlKeyword = params.get("q") ?? "";
+  const [keyword, setKeyword] = useState(urlKeyword);
+
+  function navigateToSearch(value: string) {
+    const q = value.trim();
+    const sp = new URLSearchParams();
+    if (q) sp.set("q", q);
+    const query = sp.toString();
+    navigate(query ? `/list?${query}` : "/list");
+  }
+
+  useEffect(() => {
+    setKeyword(urlKeyword);
+  }, [urlKeyword]);
+
+  useEffect(() => {
+    if (keyword.trim() === urlKeyword.trim()) return;
+    const timer = window.setTimeout(() => {
+      navigateToSearch(keyword);
+    }, SEARCH_DEBOUNCE_MS);
+    return () => window.clearTimeout(timer);
+  }, [keyword, navigate, urlKeyword]);
 
   function handleSubmit(e: FormEvent) {
     e.preventDefault();
-    const q = keyword.trim();
-    const sp = new URLSearchParams();
-    if (q) sp.set("q", q);
-    navigate(`/list?${sp.toString()}`);
+    navigateToSearch(keyword);
   }
 
   return (

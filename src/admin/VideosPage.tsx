@@ -22,6 +22,7 @@ const VIDEOS_MOBILE_QUERY = "(max-width: 640px)";
 const REGEN_PREVIEW_STATUS = "generating";
 const REGEN_PREVIEW_POLL_INTERVAL_MS = 2000;
 const REGEN_PREVIEW_TRACK_TIMEOUT_MS = 30 * 60 * 1000;
+const ADMIN_SEARCH_DEBOUNCE_MS = 500;
 
 type TabKey = "current" | "blacklist";
 
@@ -176,9 +177,9 @@ function CurrentVideosTab({
     const timer = window.setTimeout(() => {
       setSearchKeyword(keyword);
       setPage(1);
-    }, 300);
+    }, ADMIN_SEARCH_DEBOUNCE_MS);
     return () => window.clearTimeout(timer);
-  }, [keyword]);
+  }, [keyword, searchKeyword]);
 
   useEffect(() => {
     if (trackedRegenCount === 0 && !hasGeneratingPreview) return;
@@ -668,9 +669,9 @@ function BlacklistTab({
     const timer = window.setTimeout(() => {
       setSearchKeyword(keyword);
       setPage(1);
-    }, 300);
+    }, ADMIN_SEARCH_DEBOUNCE_MS);
     return () => window.clearTimeout(timer);
-  }, [keyword]);
+  }, [keyword, searchKeyword]);
 
   const driveNameMap = new Map(drives.map((d) => [d.id, d.name || d.id]));
   const totalPages = Math.max(1, Math.ceil(total / pageSize));

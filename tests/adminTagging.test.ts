@@ -109,6 +109,12 @@ test("admin tags keep builtin, user, and auto-generated tag management", () => {
   assert.doesNotMatch(tagsPageSource, /function tagDisplayAliases/);
   assert.match(tagsPageSource, /avCodePrefixes: joinRuleTerms\(rules\.avCodePrefixes\)/);
   assert.match(tagsPageSource, /tagRuleTerms\(t\)\.some/);
+  assert.match(tagsPageSource, /const ADMIN_SEARCH_DEBOUNCE_MS = 500;/);
+  assert.match(tagsPageSource, /const \[searchInput, setSearchInput\] = useState\(""\)/);
+  assert.match(tagsPageSource, /window\.setTimeout\(\(\) => \{\s*setSearchQuery\(searchInput\);/);
+  assert.match(tagsPageSource, /value=\{searchInput\}/);
+  assert.match(tagsPageSource, /onChange=\{\(e\) => setSearchInput\(e\.target\.value\)\}/);
+  assert.doesNotMatch(tagsPageSource, /onChange=\{\(e\) => setSearchQuery\(e\.target\.value\)\}/);
   assert.doesNotMatch(tagsPageSource, /admin-tag-card__keywords|admin-tag-card__keyword-pill|tagKeywordTerms/);
   assert.doesNotMatch(tagsPageSource, /function uniqueDisplayAliases/);
   assert.doesNotMatch(tagsPageSource, /系统内置车牌已自动参与匹配/);

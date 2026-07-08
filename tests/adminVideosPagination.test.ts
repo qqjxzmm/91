@@ -24,6 +24,16 @@ test("normal videos use ten items while blacklist remains responsive", () => {
   assert.match(videosPageSource, /api\.listVideos\(\{ page, size: pageSize, keyword: searchKeyword \}\)/);
 });
 
+test("admin video searches debounce typed input before querying", () => {
+  assert.match(videosPageSource, /const ADMIN_SEARCH_DEBOUNCE_MS = 500;/);
+  assert.equal(
+    Array.from(videosPageSource.matchAll(/}, ADMIN_SEARCH_DEBOUNCE_MS\);/g)).length,
+    2
+  );
+  assert.match(videosPageSource, /onChange=\{\(e\) => onChange\(e\.target\.value\)\}/);
+  assert.doesNotMatch(videosPageSource, /onChange=\{\(e\) => setSearchKeyword/);
+});
+
 test("admin video pagination only shows current and total pages", () => {
   const paginationCalls = Array.from(
     videosPageSource.matchAll(/<Pagination page=\{page\} totalPages=\{totalPages\} onPage=\{setPage\} \/>/g)

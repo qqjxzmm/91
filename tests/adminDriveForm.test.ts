@@ -520,6 +520,8 @@ test("crawler management is a separate admin section", () => {
   assert.match(crawlerPageSource, /api\.setDriveTeaserEnabled/);
   assert.match(crawlerPageSource, /toggleCrawlerTeasers/);
   assert.match(crawlerPageSource, /className="admin-crawler-global-teaser"/);
+  assert.match(crawlerPageSource, /const allCrawlerTeasersEnabled = !hasCrawlers \|\| list\.every/);
+  assert.match(crawlerPageSource, /暂无爬虫，新增后默认开启预览视频生成/);
   assert.match(crawlerPageSource, /className=\{`toggle-switch \$\{allCrawlerTeasersEnabled \? "is-on" : ""\}/);
   assert.match(crawlerPageSource, /role="switch"/);
   assert.match(crawlerPageSource, /aria-checked=\{allCrawlerTeasersEnabled\}/);

@@ -119,6 +119,9 @@ test("home page reserves tag cloud space while tags load and uses one empty libr
   const searchSubmit = ruleBody(searchCss, ".search-panel__submit");
   assert.match(searchPanelSource, /placeholder="搜索视频标题或作者"/);
   assert.doesNotMatch(searchPanelSource, /搜索视频标题或作者\.\.\./);
+  assert.match(searchPanelSource, /const SEARCH_DEBOUNCE_MS = 500;/);
+  assert.match(searchPanelSource, /window\.setTimeout\(\(\) => \{\s*navigateToSearch\(keyword\);/);
+  assert.doesNotMatch(searchPanelSource, /onChange=\{\(e\) => navigate/);
   assert.match(searchForm, /padding\s*:\s*4px/);
   assert.match(searchInput, /height\s*:\s*36px/);
   assert.match(searchSubmit, /height\s*:\s*36px/);

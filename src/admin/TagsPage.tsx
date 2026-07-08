@@ -9,6 +9,7 @@ import { AdminEmptyVisual } from "./AdminEmptyVisual";
 const DESKTOP_TAGS_PAGE_SIZE = 25;
 const MOBILE_TAGS_PAGE_SIZE = 8;
 const TAGS_MOBILE_QUERY = "(max-width: 640px)";
+const ADMIN_SEARCH_DEBOUNCE_MS = 500;
 const TAG_SOURCE_FILTERS = ["builtin", "user", "generated"];
 const TAG_DISPLAY_GROUP_ORDER: Record<string, number> = {
   builtin: 0,
@@ -30,6 +31,7 @@ export function TagsPage() {
   const [saving, setSaving] = useState(false);
   const [deletingId, setDeletingId] = useState<number | null>(null);
   const [deleteConfirm, setDeleteConfirm] = useState<DeleteConfirmState>(null);
+  const [searchInput, setSearchInput] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
   const [filterSource, setFilterSource] = useState<string>("all");
   const [selectMode, setSelectMode] = useState(false);
@@ -204,6 +206,14 @@ export function TagsPage() {
   const pageEnd = Math.min(filteredTags.length, pageEndIndex);
 
   useEffect(() => {
+    if (searchInput === searchQuery) return;
+    const timer = window.setTimeout(() => {
+      setSearchQuery(searchInput);
+    }, ADMIN_SEARCH_DEBOUNCE_MS);
+    return () => window.clearTimeout(timer);
+  }, [searchInput, searchQuery]);
+
+  useEffect(() => {
     setPage(1);
   }, [searchQuery, filterSource, pageSize]);
 
@@ -241,8 +251,8 @@ export function TagsPage() {
               <input
                 aria-label="搜索标签名或包含词"
                 type="text"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
+                value={searchInput}
+                onChange={(e) => setSearchInput(e.target.value)}
                 placeholder="搜索标签名或包含词"
               />
             </div>

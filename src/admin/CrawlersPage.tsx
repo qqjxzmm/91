@@ -200,7 +200,7 @@ export function CrawlersPage() {
   }
 
   const hasCrawlers = list.length > 0;
-  const allCrawlerTeasersEnabled = hasCrawlers && list.every((item) => item.teaserEnabled);
+  const allCrawlerTeasersEnabled = !hasCrawlers || list.every((item) => item.teaserEnabled);
   const partialCrawlerTeasersEnabled = !allCrawlerTeasersEnabled && list.some((item) => item.teaserEnabled);
 
   return (
@@ -219,7 +219,9 @@ export function CrawlersPage() {
             disabled={!hasCrawlers || togglingTeasers}
             onClick={toggleCrawlerTeasers}
             title={
-              partialCrawlerTeasersEnabled
+              !hasCrawlers
+                ? "暂无爬虫，新增后默认开启预览视频生成"
+                : partialCrawlerTeasersEnabled
                 ? "部分爬虫已开启，点击开启全部"
                 : allCrawlerTeasersEnabled
                   ? "关闭所有爬虫预览视频生成"
