@@ -339,7 +339,8 @@ test("drive form required fields use save-time prompts instead of label stars", 
 test("crawler management is a separate admin section", () => {
   assert.match(adminLayoutSource, /to="\/admin\/crawlers"/);
   assert.match(adminLayoutSource, /admin-nav__title">爬虫管理/);
-  assert.doesNotMatch(adminLayoutSource, /admin-nav__icon|SpiderIcon/);
+  assert.match(adminLayoutSource, /<Bot size=\{15\} \/>/);
+  assert.doesNotMatch(adminLayoutSource, /SpiderIcon/);
   assert.match(
     appSource,
     /path="crawlers"[\s\S]*<PageSuspense>[\s\S]*<CrawlersPage \/>[\s\S]*<\/PageSuspense>/

@@ -351,11 +351,13 @@ test("admin tag auto-generation setting is removed", () => {
 
 test("admin sidebar active item frame only wraps the centered option", () => {
   const nav = ruleBody(adminCss, ".admin-nav");
+  const navIcon = ruleBody(adminCss, ".admin-nav__icon");
   const navLink = ruleBody(adminCss, ".admin-nav__link");
   const activeMarker = ruleBody(adminCss, ".admin-nav__link.is-active::before");
 
   assert.match(nav, /justify-content\s*:\s*space-evenly/);
   assert.match(nav, /gap\s*:\s*var\(--space-4\)/);
+  assert.match(navIcon, /display\s*:\s*none/);
   assert.match(navLink, /align-self\s*:\s*center/);
   assert.match(navLink, /width\s*:\s*fit-content/);
   assert.match(navLink, /max-width\s*:\s*100%/);
@@ -1074,13 +1076,35 @@ test("mobile admin top navigation stays compact", () => {
   assert.match(ruleBody(css, ".admin-sidebar__mobile-menu"), /top\s*:\s*calc\(env\(safe-area-inset-top,\s*0px\)\s*\+\s*24px\)/);
   assert.match(ruleBody(css, ".admin-sidebar__mobile-menu"), /right\s*:\s*var\(--space-2\)/);
   assert.match(ruleBody(css, ".admin-sidebar__mobile-menu"), /transform\s*:\s*translateY\(-50%\)/);
+  assert.match(ruleBody(css, ".admin-sidebar__mobile-panel"), /align-items\s*:\s*center/);
+  assert.match(ruleBody(css, ".admin-sidebar__mobile-panel"), /gap\s*:\s*0/);
+  assert.match(
+    ruleBodyByContains(css, ".admin-sidebar__mobile-panel .admin-sidebar__home"),
+    /justify-content\s*:\s*center/
+  );
+  assert.match(
+    ruleBodyByContains(css, ".admin-sidebar__mobile-panel .admin-sidebar__home"),
+    /width\s*:\s*min\(220px,\s*100%\)/
+  );
+  assert.match(
+    ruleBodyByContains(css, ".admin-sidebar__mobile-panel .admin-sidebar__check-update::before"),
+    /width\s*:\s*72px/
+  );
+  assert.match(
+    ruleBodyByContains(css, ".admin-sidebar__mobile-panel .admin-sidebar__logout::before"),
+    /background\s*:\s*var\(--border-subtle\)/
+  );
   assert.match(ruleBody(css, ".admin-nav"), /align-items\s*:\s*center/);
   assert.match(ruleBody(css, ".admin-nav"), /justify-content\s*:\s*flex-start/);
   assert.match(ruleBody(css, ".admin-nav"), /overflow-x\s*:\s*auto/);
   assert.match(ruleBody(css, ".admin-nav__link"), /height\s*:\s*34px/);
+  assert.match(ruleBody(css, ".admin-nav__link"), /gap\s*:\s*6px/);
   assert.match(ruleBody(css, ".admin-nav__link"), /line-height\s*:\s*1/);
   assert.match(ruleBody(css, ".admin-nav__link"), /flex\s*:\s*0\s+0\s+auto/);
+  assert.match(ruleBody(css, ".admin-nav__icon"), /display\s*:\s*inline-flex/);
+  assert.match(ruleBody(css, ".admin-nav__icon"), /width\s*:\s*16px/);
   assert.match(ruleBody(css, ".admin-nav__action"), /display\s*:\s*none/);
+  assert.match(ruleBody(css, ".admin-nav .admin-nav__action"), /display\s*:\s*none/);
   assert.match(ruleBody(css, ".admin-main"), /padding\s*:\s*var\(--space-2\)\s+var\(--space-3\)\s+var\(--space-4\)/);
   assert.match(ruleBody(css, ".admin-page__header"), /margin-bottom\s*:\s*var\(--space-3\)/);
 });

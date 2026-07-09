@@ -1,6 +1,15 @@
 import { useEffect, useState } from "react";
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
-import { MoreVertical } from "lucide-react";
+import {
+  Bot,
+  Film,
+  HardDrive,
+  Home,
+  MoreVertical,
+  Palette,
+  Tags,
+  Users,
+} from "lucide-react";
 import * as api from "./api";
 import { useAuth } from "./AuthContext";
 import { useToast } from "./ToastContext";
@@ -63,6 +72,9 @@ export function AdminLayout() {
           <div className="admin-nav__group admin-nav__group--home">
             <span className="admin-nav__group-label">主站</span>
             <NavLink to="/" className="admin-nav__link">
+              <span className="admin-nav__icon" aria-hidden="true">
+                <Home size={15} />
+              </span>
               <span className="admin-nav__text">
                 <span className="admin-nav__title">返回主站</span>
               </span>
@@ -76,6 +88,9 @@ export function AdminLayout() {
                 `admin-nav__link ${isActive ? "is-active" : ""}`
               }
             >
+              <span className="admin-nav__icon" aria-hidden="true">
+                <HardDrive size={15} />
+              </span>
               <span className="admin-nav__text">
                 <span className="admin-nav__title">网盘管理</span>
               </span>
@@ -86,6 +101,9 @@ export function AdminLayout() {
                 `admin-nav__link ${isActive ? "is-active" : ""}`
               }
             >
+              <span className="admin-nav__icon" aria-hidden="true">
+                <Bot size={15} />
+              </span>
               <span className="admin-nav__text">
                 <span className="admin-nav__title">爬虫管理</span>
               </span>
@@ -99,6 +117,9 @@ export function AdminLayout() {
                 `admin-nav__link ${isActive ? "is-active" : ""}`
               }
             >
+              <span className="admin-nav__icon" aria-hidden="true">
+                <Film size={15} />
+              </span>
               <span className="admin-nav__text">
                 <span className="admin-nav__title">视频管理</span>
               </span>
@@ -109,6 +130,9 @@ export function AdminLayout() {
                 `admin-nav__link ${isActive ? "is-active" : ""}`
               }
             >
+              <span className="admin-nav__icon" aria-hidden="true">
+                <Tags size={15} />
+              </span>
               <span className="admin-nav__text">
                 <span className="admin-nav__title">标签管理</span>
               </span>
@@ -119,6 +143,9 @@ export function AdminLayout() {
                 `admin-nav__link ${isActive ? "is-active" : ""}`
               }
             >
+              <span className="admin-nav__icon" aria-hidden="true">
+                <Users size={15} />
+              </span>
               <span className="admin-nav__text">
                 <span className="admin-nav__title">用户管理</span>
               </span>
@@ -132,6 +159,9 @@ export function AdminLayout() {
                 `admin-nav__link ${isActive ? "is-active" : ""}`
               }
             >
+              <span className="admin-nav__icon" aria-hidden="true">
+                <Palette size={15} />
+              </span>
               <span className="admin-nav__text">
                 <span className="admin-nav__title">主题外观</span>
               </span>

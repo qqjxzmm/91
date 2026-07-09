@@ -131,6 +131,10 @@
     transform var(--transition-fast);
 }
 
+.admin-nav__icon {
+  display: none;
+}
+
 .admin-nav__group > .admin-nav__link + .admin-nav__link {
   margin-top: 8px;
 }
@@ -2849,7 +2853,8 @@
   .admin-sidebar__mobile-panel {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    align-items: center;
+    gap: 0;
     position: fixed;
     bottom: 0;
     left: 0;
@@ -2861,6 +2866,38 @@
     transform: translateY(100%);
     transition: transform 0.2s ease-out;
     box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.3);
+  }
+
+  .admin-sidebar__mobile-panel .admin-sidebar__home,
+  .admin-sidebar__mobile-panel .admin-sidebar__check-update,
+  .admin-sidebar__mobile-panel .admin-sidebar__logout {
+    position: relative;
+    justify-content: center;
+    width: min(220px, 100%);
+    min-height: 38px;
+    padding: 8px 12px;
+    border: 0;
+    background: transparent;
+    font: inherit;
+    text-align: center;
+  }
+
+  .admin-sidebar__mobile-panel .admin-sidebar__check-update,
+  .admin-sidebar__mobile-panel .admin-sidebar__logout {
+    margin-top: 4px;
+    padding-top: 12px;
+  }
+
+  .admin-sidebar__mobile-panel .admin-sidebar__check-update::before,
+  .admin-sidebar__mobile-panel .admin-sidebar__logout::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 72px;
+    height: 1px;
+    background: var(--border-subtle);
+    transform: translateX(-50%);
   }
 
   .admin-sidebar__mobile-panel.is-open {
@@ -2899,6 +2936,7 @@
     display: flex;
     align-self: center;
     flex: 0 0 auto;
+    gap: 6px;
     height: 34px;
     min-height: 34px;
     padding: 0 11px;
@@ -2907,6 +2945,26 @@
     font-size: var(--font-sm);
     line-height: 1;
     border: 1px solid transparent;
+  }
+
+  .admin-nav__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+    width: 16px;
+    height: 16px;
+    color: currentColor;
+  }
+
+  .admin-nav__icon svg {
+    width: 15px;
+    height: 15px;
+    stroke-width: 2.2;
+  }
+
+  .admin-nav .admin-nav__action {
+    display: none;
   }
 
   .admin-nav__group > .admin-nav__link + .admin-nav__link {
