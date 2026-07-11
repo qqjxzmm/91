@@ -288,6 +288,15 @@ test("shorts play pause does not render transient center hud", () => {
     shortsPageSource,
     /\{paused && isActive && !scrubbing && \(\s*<div className="shorts-slide__paused"/
   );
+  assert.match(
+    shortsPageSource,
+    /<span className="shorts-slide__paused-icon">\s*<Play size=\{22\} fill="currentColor" strokeWidth=\{1\.75\} \/>/
+  );
+  assert.match(
+    shortsCssSource,
+    /\.shorts-slide__paused-icon\s*\{[\s\S]*?width:\s*52px;[\s\S]*?height:\s*52px;[\s\S]*?border-radius:\s*50%;/
+  );
+  assert.doesNotMatch(shortsPageSource, />\s*▶\s*</);
 });
 
 test("shorts hud toast keeps icon and text close together", () => {

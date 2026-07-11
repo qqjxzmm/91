@@ -260,17 +260,32 @@ body.shorts-document-scroll::before {
   }
 }
 
-/* 原始大三角形的遗留样式（做兼容处理） */
+/* 暂停时的中央播放提示。外层只负责居中，图标本身保持小巧、圆润。 */
 .shorts-slide__paused {
   position: absolute;
   inset: 0;
   display: grid;
   place-items: center;
-  font-size: 80px;
-  color: rgba(255, 255, 255, 0.85);
-  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
   pointer-events: none;
   z-index: 3;
+}
+
+.shorts-slide__paused-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  color: rgba(255, 255, 255, 0.94);
+  background: rgba(0, 0, 0, 0.42);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 6px 22px rgba(0, 0, 0, 0.38);
+}
+
+.shorts-slide__paused-icon svg {
+  transform: translateX(1px);
 }
 
 /* 2x 倍速指示 */

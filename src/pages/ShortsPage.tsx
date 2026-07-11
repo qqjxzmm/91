@@ -9,6 +9,7 @@ import { Link, useNavigate } from "react-router-dom";
 import {
   ChevronLeft,
   Heart,
+  Play,
   Volume2,
   VolumeX,
   EyeOff,
@@ -2784,7 +2785,9 @@ function ShortsSlide({
 
       {paused && isActive && !scrubbing && (
         <div className="shorts-slide__paused" aria-hidden="true">
-          ▶
+          <span className="shorts-slide__paused-icon">
+            <Play size={22} fill="currentColor" strokeWidth={1.75} />
+          </span>
         </div>
       )}
 
